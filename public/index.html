@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home - Student Council Election</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: url('images/voting-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      color: black;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      color: black;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: 2px solid black;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sidebar ul li:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+
+    .container {
+      margin-left: 220px;
+      padding: 40px;
+      flex: 1;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      padding: 45px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      color: black;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.8em;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .candidate-card {
+      background-color: rgba(255, 255, 255, 0.95);
+      color: black;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
+    }
+
+    .candidate-card:hover {
+      transform: scale(1.02);
+    }
+
+    ul.characteristics {
+      padding-left: 20px;
+    }
+
+    ul.characteristics li {
+      line-height: 1.6em;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .container {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li onclick="location.href='index.html'">HOME</li>
+      <li id="loginLogoutBtn" onclick="handleLoginLogout()">LOGIN</li>
+      <li onclick="location.href='election.html'">ELECTION</li>
+      <li onclick="location.href='candidates.html'">CANDIDATES</li>
+      <li onclick="location.href='admin.html'">RESULTS</li>
+      <li onclick="location.href='about.html'">ABOUT US</li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="section">
+      <h1>Welcome to the Student Election Council</h1>
+      <p>
+        Welcome to the official portal of the <strong>Student Council Elections</strong>! This site is your gateway to a transparent, fair, and democratic election process, where every vote counts and every voice matters.
+      </p>
+      <p>
+        This year’s election is for the prestigious position of <strong>President of the Student Activity Council (SAC)</strong>. As SAC President, the elected student will lead all major student activities, represent the student body, and serve as a bridge between students and administration.
+      </p>
+      <p>
+        The <strong>Student Activity Council (SAC)</strong> is the heart of student engagement. It plans and organizes a wide range of events such as:
+        <ul style="margin-left: 20px; font-size: 18px;">
+          <li>🎉 Cultural fests & celebrations</li>
+          <li>💡 Tech fairs, coding nights, and innovation challenges</li>
+          <li>⚽ Sports competitions and college league tournaments</li>
+          <li>🎓 Seminars, guest talks, and student workshops</li>
+          <li>🤝 Awareness campaigns and leadership development programs</li>
+        </ul>
+      </p>
+      <p>
+        Participating in SAC, especially as its President, gives students an amazing opportunity to:
+        <ul style="margin-left: 20px; font-size: 18px;">
+          <li>✔ Build real-world leadership skills</li>
+          <li>✔ Network with influential faculty and student leaders</li>
+          <li>✔ Organize large-scale events and make lasting memories</li>
+          <li>✔ Influence positive change within the student community</li>
+        </ul>
+      </p>
+      <p>
+        Be informed. Be involved. Be the voice of change. Explore this portal to meet the candidates, cast your vote, and help shape our student future!
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Updated login/logout button logic
+    window.onload = function () {
+      const user = localStorage.getItem("loggedInUser");
+      const btn = document.getElementById("loginLogoutBtn");
+      if (btn) {
+        if (user) {
+          btn.textContent = "LOGOUT";
+        } else {
+          btn.textContent = "LOGIN";
+        }
+      }
+    };
+
+    function handleLoginLogout() {
+      const user = localStorage.getItem("loggedInUser");
+      if (user) {
+        localStorage.removeItem("loggedInUser");
+        alert("You have been logged out.");
+        window.location.href = "login.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    }
+  </script>
+</body>
+</html>

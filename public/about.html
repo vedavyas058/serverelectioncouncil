@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Student Council Election</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/voting-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      color: black;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      color: black;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: 2px solid black;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sidebar ul li:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+
+    .container {
+      margin-left: 220px;
+      padding: 40px;
+      flex: 1;
+    }
+
+    .about-section {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      color: black;
+      transition: transform 0.2s;
+    }
+
+    .about-section:hover {
+      transform: scale(1.01);
+    }
+
+    .about-section h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .about-section p {
+      font-size: 1.1em;
+      line-height: 1.6em;
+      text-align: justify;
+    }
+
+    .section-title {
+      margin-top: 30px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    ul.bullet {
+      margin-left: 20px;
+      line-height: 1.7em;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-bottom: 2px solid black;
+      }
+      .container {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <body>
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li onclick="location.href='index.html'">HOME</li>
+        <li id="loginLogoutBtn" onclick="handleLoginLogout()">LOGIN</li>
+        <li onclick="location.href='election.html'">ELECTION</li>
+        <li onclick="location.href='candidates.html'">CANDIDATES</li>
+        <li onclick="location.href='admin.html'">RESULTS</li>
+        <li onclick="location.href='about.html'">ABOUT US</li>
+      </ul>
+    </div>
+  
+  <div class="container">
+    <div class="about-section">
+      <h1>About Us</h1>
+      <p>Welcome to the official Online Student Council Election platform of VU College. Our goal is to empower students by providing a transparent, secure, and user-friendly voting experience.</p>
+
+      <p>This digital initiative was started by a group of passionate Computer Science students, aiming to integrate modern technology into student governance. Through this platform, every student gets an equal opportunity to elect the right representatives.</p>
+
+      <div class="section-title">Our Mission</div>
+      <p>To strengthen student democracy through an accessible and fair digital election process. We believe leadership should be earned through merit, trust, and student support.</p>
+
+      <div class="section-title">Core Objectives</div>
+      <ul class="bullet">
+        <li>Ensure free and fair elections</li>
+        <li>Promote student leadership and participation</li>
+        <li>Increase awareness and accessibility of student voting</li>
+        <li>Eliminate manual and paper-based voting errors</li>
+      </ul>
+
+      <div class="section-title">Our Team</div>
+      <p>This platform was designed and developed by a team of final-year CSE students under the guidance of faculty members. It includes front-end developers, back-end coders, and database administrators working together to bring this vision to life.</p>
+
+      <div class="section-title">Contact Us</div>
+      <p>If you have any questions, suggestions, or issues, feel free to contact us:</p>
+      <ul class="bullet">
+        <li>Email: election-support@vucampus.edu</li>
+        <li>Phone: +91-9876543210</li>
+        <li>Office: Room 203, Admin Block, VU Campus</li>
+      </ul>
+
+      <p>Thank you for being part of a new era of student representation. Your vote matters!</p>
+    </div>
+  </div>
+
+  <script>
+    // Updated login/logout button logic
+    window.onload = function () {
+      const user = localStorage.getItem("loggedInUser");
+      const btn = document.getElementById("loginLogoutBtn");
+      if (btn) {
+        if (user) {
+          btn.textContent = "LOGOUT";
+        } else {
+          btn.textContent = "LOGIN";
+        }
+      }
+    };
+
+    function handleLoginLogout() {
+      const user = localStorage.getItem("loggedInUser");
+      if (user) {
+        localStorage.removeItem("loggedInUser");
+        alert("You have been logged out.");
+        window.location.href = "login.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Student Council Election</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/voting-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      margin: 0;
+      color: black;
+      min-height: 100vh;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      color: black;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: 2px solid black;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .sidebar ul li:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+    .container {
+      margin-left: 220px;
+      padding: 40px;
+      flex: 1;
+    }
+    .section {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      color: black;
+      margin-bottom: 30px;
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center content horizontally */
+      justify-content: center; /* Center content vertically */
+    }
+    .section:hover {
+      transform: scale(1.01);
+    }
+    .candidate-list {
+      list-style: none;
+      padding: 0;
+    }
+    .candidate-item {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: black;
+      font-weight: bold;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .candidate-item:hover {
+      background-color: rgba(0, 123, 255, 0.2);
+      border-color: #0077cc;
+    }
+    button {
+      margin-top: 15px;
+      background: transparent;
+      border: 2px solid #0077cc;
+      color: #0077cc;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button:hover {
+      background: #0077cc;
+      color: white;
+    }
+    .hidden {
+      display: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .container {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+
+    /* Center the voting information */
+    #confirmation, #voteSuccess {
+      text-align: center; /* Center text horizontally */
+    }
+
+    #confirmation p, #voteSuccess p {
+      margin: 10px 0; /* Add spacing between paragraphs */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li onclick="location.href='index.html'">HOME</li>
+      <li id="loginLogoutBtn" onclick="handleLoginLogout()">LOGIN</li>
+      <li onclick="location.href='election.html'">ELECTION</li>
+      <li onclick="location.href='candidates.html'">CANDIDATES</li>
+      <li onclick="location.href='admin.html'">RESULTS</li>
+      <li onclick="location.href='about.html'">ABOUT US</li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="section" id="instructions">
+      <h1>Online Student Council Election</h1>
+      <p>
+        Welcome to the Online Student Council Election platform. Follow the instructions below to cast your vote:
+      </p>
+      <ol>
+        <li>Log in using your registration number and password.</li>
+        <li>Review the list of candidates running for the election.</li>
+        <li>Select the candidate you wish to vote for.</li>
+        <li>Confirm your vote on the confirmation page.</li>
+        <li>Once your vote is recorded, you cannot change it.</li>
+      </ol>
+      <p>
+        Please ensure you have read the candidate profiles before proceeding to vote. Your vote is confidential and will contribute to the democratic process of electing the student council.
+      </p>
+      <button onclick="showCandidates()">Proceed to Vote</button>
+    </div>
+
+    <div class="section hidden" id="candidateSelection">
+      <h2>Select a Candidate</h2>
+      <ul class="candidate-list">
+        <li class="candidate-item" onclick="selectCandidate('A Vivek')">A Vivek</li>
+        <li class="candidate-item" onclick="selectCandidate('B Harshit')">B Harshit</li>
+        <li class="candidate-item" onclick="selectCandidate('C Priya')">C Priya</li>
+        <li class="candidate-item" onclick="selectCandidate('D Nithin')">D Nithin</li>
+      </ul>
+    </div>
+
+    <div class="section hidden" id="confirmation">
+      <h2>Confirm Your Vote</h2>
+      <p id="selectedCandidate"></p>
+      <p id="studentID"></p>
+      <button onclick="recordVote()">Confirm Vote</button>
+      <button onclick="showCandidates()">Change Vote</button>
+    </div>
+
+    <div class="section hidden" id="voteSuccess">
+      <h2>Vote Recorded</h2>
+      <p id="message"></p>
+    </div>
+  </div>
+
+  <script>
+    // Check if the user is logged in
+    if (!localStorage.getItem("loggedInUser")) {
+      alert("You must log in first!");
+      window.location.href = "login.html"; // Redirect to login page
+    }
+  </script>
+
+  <script>
+    window.onload = function () {
+      const loggedInUser = localStorage.getItem("loggedInUser");
+      const btn = document.getElementById("loginLogoutBtn");
+
+      if (!loggedInUser) {
+        alert("Please log in first.");
+        window.location.href = "login.html";
+      }
+    };
+
+    function handleLoginLogout() {
+      const user = localStorage.getItem("loggedInUser");
+      if (user) {
+        localStorage.removeItem("loggedInUser");
+        alert("You have been logged out.");
+        window.location.href = "login.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    }
+
+    let votes = JSON.parse(localStorage.getItem('votes')) || {
+      "A Vivek": 0,
+      "B Harshit": 0,
+      "C Priya": 0,
+      "D Nithin": 0
+    };
+
+    let selectedCandidate = "";
+    let hasVoted = localStorage.getItem("voted_" + localStorage.getItem("loggedInUser")) === "true";
+
+    function showCandidates() {
+      if (hasVoted) {
+        alert("You have already voted.");
+        return;
+      }
+      document.getElementById("instructions").classList.add("hidden");
+      document.getElementById("confirmation").classList.add("hidden");
+      document.getElementById("voteSuccess").classList.add("hidden");
+      document.getElementById("candidateSelection").classList.remove("hidden");
+    }
+
+    function selectCandidate(candidate) {
+      selectedCandidate = candidate;
+      document.getElementById("selectedCandidate").innerText = `You selected: ${candidate}`;
+      document.getElementById("studentID").innerText = `Your Registration Number: ${localStorage.getItem("loggedInUser")}`;
+      document.getElementById("candidateSelection").classList.add("hidden");
+      document.getElementById("confirmation").classList.remove("hidden");
+    }
+
+    function recordVote() {
+      if (hasVoted) {
+        alert("You have already voted.");
+        return;
+      }
+      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
+      votes[selectedCandidate]++;
+      localStorage.setItem("votes", JSON.stringify(votes));
+      localStorage.setItem("voted_" + localStorage.getItem("loggedInUser"), "true");
+      hasVoted = true;
+
+      document.getElementById("confirmation").classList.add("hidden");
+      document.getElementById("voteSuccess").classList.remove("hidden");
+      document.getElementById("message").innerText = `You voted for ${selectedCandidate}. Thank you!`;
+    }
+  </script>
+</body>
+</html>

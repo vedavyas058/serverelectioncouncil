@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Login</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/voting-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      margin: 0;
+      color: black;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      color: black;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: 2px solid black;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sidebar ul li:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+
+    .login-container {
+      margin-left: 220px;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      color: black;
+      width: 320px;
+      transition: transform 0.2s;
+    }
+
+    .login-box:hover {
+      transform: scale(1.01);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 10px;
+      background: transparent;
+      border: 2px solid #0077cc;
+      color: #0077cc;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #0077cc;
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li onclick="location.href='index.html'">HOME</li>
+      <li id="loginLogoutBtn" onclick="handleLoginLogout()">LOGIN</li>
+      <li onclick="location.href='election.html'">ELECTION</li>
+      <li onclick="location.href='candidates.html'">CANDIDATES</li>
+      <li onclick="location.href='admin.html'">RESULTS</li>
+      <li onclick="location.href='about.html'">ABOUT US</li>
+    </ul>
+  </div>
+
+  <div class="login-container">
+    <div class="login-box" id="loginBox">
+      <h2 style="text-align:center;">Student Login</h2>
+      <input type="text" id="username" placeholder="Registration Number (e.g. 231FA04A01)">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <button onclick="showCreateAccount()">Create Account</button>
+      <button onclick="showOtpSection()">Forgot Password?</button>
+
+      <div id="otpSection" class="hidden">
+        <input type="email" id="forgotEmail" placeholder="Enter your registered email">
+        <button onclick="sendOtp()">Send OTP</button>
+        <input type="text" id="enteredOtp" placeholder="Enter OTP" class="hidden">
+        <button onclick="verifyOtp()" class="hidden" id="verifyBtn">Verify OTP</button>
+      </div>
+    </div>
+
+    <div class="login-box hidden" id="createAccountBox">
+      <h2 style="text-align:center;">Create Account</h2>
+      <input type="text" id="name" placeholder="Full Name">
+      <input type="text" id="regNumber" placeholder="Registration Number">
+      <label for="branch" style="font-weight:bold;">Branch:</label>
+      <select id="branch">
+        <option value="" disabled selected>Select Branch</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Mechanical Engineering">Mechanical Engineering</option>
+        <option value="Electrical Engineering">Electrical Engineering</option>
+        <option value="Civil Engineering">Civil Engineering</option>
+        <option value="Electronics and Communication">Electronics and Communication</option>
+      </select>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="createPassword" placeholder="Create Password">
+      <button onclick="createAccount()">Create Account</button>
+      <button onclick="showLogin()">Back to Login</button>
+    </div>
+  </div>
+
+  <script>
+    let generatedOtp = "";
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const account = JSON.parse(localStorage.getItem("account_" + username));
+      if (account && account.password === password) {
+        localStorage.setItem("loggedInUser", username); // Store the logged-in user
+        alert("Login successful!");
+        window.location.href = "index.html";
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    }
+
+    function createAccount() {
+      const name = document.getElementById("name").value.trim();
+      const regNumber = document.getElementById("regNumber").value.trim();
+      const branch = document.getElementById("branch").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("createPassword").value.trim();
+
+      if (!name || !regNumber || !branch || !email || !password) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const account = { name, regNumber, branch, email, password };
+      localStorage.setItem("account_" + regNumber, JSON.stringify(account));
+      alert("Account created successfully! You can now log in.");
+      showLogin();
+    }
+
+    function showCreateAccount() {
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("createAccountBox").classList.remove("hidden");
+    }
+
+    function showLogin() {
+      document.getElementById("createAccountBox").classList.add("hidden");
+      document.getElementById("loginBox").classList.remove("hidden");
+    }
+
+    function showOtpSection() {
+      document.getElementById("otpSection").classList.remove("hidden");
+    }
+
+    function sendOtp() {
+      const email = document.getElementById("forgotEmail").value.trim();
+      if (!email) return alert("Enter your registered email.");
+
+      // Generate a 6-digit OTP
+      generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+      // Send OTP to the backend
+      fetch("http://localhost:5000/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp: generatedOtp }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("OTP sent to your email.");
+            document.getElementById("enteredOtp").classList.remove("hidden");
+            document.getElementById("verifyBtn").classList.remove("hidden");
+          } else {
+            alert("Failed to send OTP. Try again.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending OTP:", error);
+          alert("Failed to send OTP. Try again.");
+        });
+    }
+
+    function verifyOtp() {
+      const entered = document.getElementById("enteredOtp").value.trim();
+      if (entered === generatedOtp) {
+        alert("OTP verified! Redirecting to the election page.");
+        
+        // Store login state in localStorage
+        localStorage.setItem("loggedInUser", "true");
+
+        // Redirect to election.html
+        window.location.href = "election.html";
+      } else {
+        alert("Incorrect OTP. Please try again.");
+      }
+    }
+
+    function handleLoginLogout() {
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

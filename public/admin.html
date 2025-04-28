@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Election Results</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/voting-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      margin: 0;
+      color: black;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      color: black;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: 2px solid black;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sidebar ul li:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+
+    .container {
+      margin-left: 220px;
+      padding: 40px;
+      flex: 1;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      color: black;
+      margin-bottom: 30px;
+      transition: transform 0.2s;
+    }
+
+    .section:hover {
+      transform: scale(1.01);
+    }
+
+    button {
+      margin-top: 15px;
+      margin-right: 10px;
+      background: transparent;
+      border: 2px solid #0077cc;
+      color: #0077cc;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    button:hover {
+      background: #0077cc;
+      color: white;
+    }
+
+    pre {
+      background-color: rgba(0, 0, 0, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-weight: bold;
+      color: black;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body onload="checkLogin()">
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li onclick="location.href='index.html'">HOME</li>
+      <li id="loginLogoutBtn" onclick="handleLoginLogout()">LOGIN</li>
+      <li onclick="location.href='election.html'">ELECTION</li>
+      <li onclick="location.href='candidates.html'">CANDIDATES</li>
+      <li onclick="location.href='admin.html'">RESULTS</li>
+      <li onclick="location.href='about.html'">ABOUT US</li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="section">
+      <h2>Election Results</h2>
+      <button onclick="viewResults()">View Results</button>
+      <button onclick="resetVotes()">Reset Results</button>
+      <pre id="resultsDisplay">Results will appear here...</pre>
+    </div>
+  </div>
+
+  <script>
+    function checkLogin() {
+      const isLoggedIn = localStorage.getItem('loggedIn');
+      if (isLoggedIn !== 'true') {
+        alert("Please login or create an account first to view the results.");
+        window.location.href = "login.html";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedIn');
+      alert("You have been logged out.");
+      window.location.href = "login.html";
+    }
+
+    function viewResults() {
+      const pwd = prompt("Enter admin password:");
+      if (pwd === "vucse") {
+        const votes = JSON.parse(localStorage.getItem('votes')) || {
+          "A Vivek": 0,
+          "B Harshit": 0,
+          "C Priya": 0,
+          "D Nithin": 0
+        };
+
+        let msg = "🗳️ Election Results:\n\n";
+        for (let candidate in votes) {
+          msg += `${candidate}: ${votes[candidate]} vote(s)\n`;
+        }
+
+        document.getElementById("resultsDisplay").textContent = msg;
+      } else {
+        alert("Access denied. Incorrect password.");
+      }
+    }
+
+    function resetVotes() {
+      const pwd = prompt("Enter admin password to reset votes:");
+      if (pwd === "vucse") {
+        const emptyVotes = {
+          "A Vivek": 0,
+          "B Harshit": 0,
+          "C Priya": 0,
+          "D Nithin": 0
+        };
+        localStorage.setItem('votes', JSON.stringify(emptyVotes));
+        alert("Votes have been reset.");
+        document.getElementById("resultsDisplay").textContent = "Results have been reset.";
+      } else {
+        alert("Access denied. Incorrect password.");
+      }
+    }
+
+    // Updated login/logout button logic
+    window.onload = function () {
+      const user = localStorage.getItem("loggedInUser");
+      const btn = document.getElementById("loginLogoutBtn");
+      if (btn) {
+        if (user) {
+          btn.textContent = "LOGOUT";
+        } else {
+          btn.textContent = "LOGIN";
+        }
+      }
+    };
+
+    function handleLoginLogout() {
+      const user = localStorage.getItem("loggedInUser");
+      if (user) {
+        localStorage.removeItem("loggedInUser");
+        alert("You have been logged out.");
+        window.location.href = "login.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    }
+  </script>
+</body>
+</html>

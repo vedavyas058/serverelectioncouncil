@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Candidate Information</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/voting-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      color: black;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      color: black;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border: 2px solid black;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sidebar ul li:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+
+    .container {
+      margin-left: 220px;
+      padding: 40px;
+      flex: 1;
+    }
+
+    .candidate-card {
+      background-color: rgba(255, 255, 255, 0.95);
+      color: black;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
+    }
+
+    .candidate-card:hover {
+      transform: scale(1.02);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.8em;
+    }
+
+    ul.characteristics {
+      padding-left: 20px;
+    }
+
+    ul.characteristics li {
+      line-height: 1.6em;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .container {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li onclick="location.href='index.html'">HOME</li>
+      <li id="loginLogoutBtn" onclick="handleLoginLogout()">LOGIN</li>
+      <li onclick="location.href='election.html'">ELECTION</li>
+      <li onclick="location.href='candidates.html'">CANDIDATES</li>
+      <li onclick="location.href='admin.html'">RESULTS</li>
+      <li onclick="location.href='about.html'">ABOUT US</li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="candidate-card">
+      <h2>Vivek</h2>
+      <p><strong>Department:</strong> Computer Science and Engineering</p>
+      <p><strong>Reg No:</strong> 231FA04B01</p>
+      <ul class="characteristics">
+        <li>Strong leadership and communication skills</li>
+        <li>Actively involved in organizing college events</li>
+        <li>Good academic performance</li>
+        <li>Committed to addressing student concerns</li>
+      </ul>
+    </div>
+
+    <div class="candidate-card">
+      <h2>B Harshit</h2>
+      <p><strong>Department:</strong> Electronics and Communication Engineering</p>
+      <p><strong>Reg No:</strong> 231FA04G45</p>
+      <ul class="characteristics">
+        <li>Highly responsible and trustworthy</li>
+        <li>Experience in student clubs and leadership</li>
+        <li>Good coordination with faculty and students</li>
+        <li>Strong problem-solving skills</li>
+      </ul>
+    </div>
+
+    <div class="candidate-card">
+      <h2>C Priya</h2>
+      <p><strong>Department:</strong> Information Technology</p>
+      <p><strong>Reg No:</strong> 231FA04A23</p>
+      <ul class="characteristics">
+        <li>Creative thinker with fresh ideas</li>
+        <li>Excellent communication and teamwork skills</li>
+        <li>Regular volunteer in campus events</li>
+        <li>Dedicated to improving campus life</li>
+      </ul>
+    </div>
+
+    <div class="candidate-card">
+      <h2>D Nithin</h2>
+      <p><strong>Department:</strong> Mechanical Engineering</p>
+      <p><strong>Reg No:</strong> 231FA04P67</p>
+      <ul class="characteristics">
+        <li>Good decision-making under pressure</li>
+        <li>Disciplined and punctual</li>
+        <li>Supportive and approachable</li>
+        <li>Has a strong vision for the student community</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const loggedInUser = localStorage.getItem("loggedInUser");
+
+    // Updated login/logout button logic
+    window.onload = function () {
+      const user = localStorage.getItem("loggedInUser");
+      const btn = document.getElementById("loginLogoutBtn");
+      if (btn) {
+        if (user) {
+          btn.textContent = "LOGOUT";
+        } else {
+          btn.textContent = "LOGIN";
+        }
+      }
+    };
+
+    function handleLoginLogout() {
+      const user = localStorage.getItem("loggedInUser");
+      if (user) {
+        localStorage.removeItem("loggedInUser");
+        alert("You have been logged out.");
+        window.location.href = "login.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    }
+
+    if (!loggedInUser) {
+      alert("Please log in first.");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
